@@ -54,6 +54,10 @@ def main():
                 return
         screen.blit(bg_img, [0, 0]) 
 
+        if kk_rct.colliderect(bb_rct):
+            print("game over")
+            return
+
         key_lst = pg.key.get_pressed()
         sum_mv = [0, 0]
         for key, mv in DELTA.items():#練習問題１
@@ -66,12 +70,12 @@ def main():
         screen.blit(kk_img, kk_rct)
 
         bb_rct.move_ip(vx, vy)#練習問題２
-        yoko, tate = check_bound(bb_rct)
+        yoko, tate = check_bound(bb_rct)#ここから練習問題３
         if not yoko:
             vx *= -1
 
         if not tate:
-            vy *=-1
+            vy *=-1#ここまで練習問題３
 
 
 
