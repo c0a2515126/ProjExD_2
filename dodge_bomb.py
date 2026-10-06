@@ -1,6 +1,7 @@
 import os
 import random #練習問題２
 import sys
+import time#演習課題１
 import pygame as pg
 
 
@@ -22,6 +23,35 @@ def check_bound(rect: pg.Rect) -> tuple[bool,bool]:#ここから練習問題３
         tate = False
     return yoko, tate#ここまで練習問題３
 
+def gameover(screen: pg.Surface) -> None:#ここから演習１
+
+    """
+    爆弾着弾時に画面をブラックアウトし
+    泣いているこうかとんとgeme overの文字を5秒間表示する関数
+    引数：screen(画面surface)
+    """
+    black_sfc = pg.Surface((WIDTH, HEIGHT))
+    black_sfc.fill((0, 0, 0))
+    black_sfc.set_alpha(160) 
+
+    fonto = pg.font.Font(None, 80)
+    txt = fonto.render("Game Over", True, (255, 255, 255))
+    txt_rct = txt.get_rect()
+    txt_rct.center = WIDTH // 2, HEIGHT // 2
+
+    cry_img = pg.image.load("fig/8.png")
+    cry_rct1 = cry_img.get_rect()
+    cry_rct2 = cry_img.get_rect()
+    cry_rct1.center = txt_rct.left - 50, HEIGHT // 2
+    cry_rct2.center = txt_rct.right + 50, HEIGHT // 2
+
+    black_sfc.blit(txt, txt_rct)
+    black_sfc.blit(cry_img, cry_rct1)
+    black_sfc.blit(cry_img, cry_rct2)
+
+    screen.blit(black_sfc,[0,0])
+    pg.display.update()
+    time.sleep(5)#ここまで演習１
 
 DELTA = {
     pg.K_UP: (0, -5),
@@ -55,7 +85,7 @@ def main():
         screen.blit(bg_img, [0, 0]) 
 
         if kk_rct.colliderect(bb_rct):
-            print("game over")
+            gameover(screen)
             return
 
         key_lst = pg.key.get_pressed()
